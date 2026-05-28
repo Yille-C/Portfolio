@@ -1,0 +1,129 @@
+/* General Setup */
+.hero-container {
+  background-color: #000;
+  color: #fff;
+  min-height: 100vh;
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+  font-family: 'Inter', sans-serif; /* Replace with your chosen font */
+}
+
+/* Intro Screen */
+.intro-screen {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #000;
+  z-index: 50;
+}
+
+.intro-screen h1 {
+  font-size: 2rem;
+  font-weight: 400;
+  letter-spacing: 0.05em;
+  color: #a3a3a3;
+}
+
+/* Main Hero Content */
+.main-hero {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.hero-content {
+  text-align: center;
+  z-index: 10;
+  padding: 0 20px;
+}
+
+.main-title {
+  font-size: 5rem; /* Adjust based on your preference */
+  font-weight: 600;
+  line-height: 1.1;
+  margin-bottom: 20px;
+}
+
+.sub-title {
+  font-size: 1.2rem;
+  color: #d4d4d4;
+  margin-bottom: 50px;
+}
+
+/* Diagonal Marquee */
+.marquee-wrapper {
+  position: absolute;
+  top: 50%; /* Adjust vertical placement */
+  left: -10%;
+  width: 120%;
+  transform: rotate(-5deg) translateY(-50%);
+  z-index: 5;
+}
+
+.marquee-container {
+  background: #fff;
+  color: #000;
+  padding: 15px 0;
+  overflow: hidden;
+  white-space: nowrap;
+  border-top: 1px solid #000;
+  border-bottom: 1px solid #000;
+}
+
+.marquee-content {
+  display: inline-block;
+  font-size: 1.5rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  animation: scrollText 15s linear infinite;
+}
+
+@keyframes scrollText {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); } /* Requires the text to be repeated twice in the HTML for seamless loop */
+}
+
+/* Scroll Indicator */
+.scroll-indicator {
+  position: absolute;
+  bottom: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+}
+
+.scroll-indicator span {
+  font-size: 0.8rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+.scroll-line {
+  width: 1px;
+  height: 60px;
+  background: rgba(255, 255, 255, 0.3);
+  position: relative;
+  overflow: hidden;
+}
+
+.scroll-line::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 50%;
+  background: #fff;
+  animation: scrollLine 2s ease-in-out infinite;
+}
+
+@keyframes scrollLine {
+  0% { top: -50%; }
+  100% { top: 150%; }
+}
