@@ -5,109 +5,157 @@
   min-height: 100vh;
   width: 100%;
   position: relative;
-  overflow: hidden;
-  font-family: 'Inter', sans-serif; /* Replace with your chosen font */
+  overflow-x: hidden;
+  overflow-y: visible;
+  font-family: 'Inter', sans-serif;
+  /* Fallback font */
 }
 
 /* Intro Screen */
 .intro-screen {
-  position: absolute;
+  position: fixed;
   inset: 0;
   display: flex;
   align-items: center;
   justify-content: center;
   background-color: #000;
-  z-index: 50;
+  z-index: 9999;
 }
 
 .intro-screen h1 {
-  font-size: 2rem;
+  font-size: clamp(1.2rem, 3vw, 2rem);
   font-weight: 400;
   letter-spacing: 0.05em;
   color: #a3a3a3;
+  text-align: center;
+  padding: 0 20px;
 }
 
 /* Main Hero Content */
 .main-hero {
   height: 100vh;
+  width: 100vw;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  position: relative;
 }
 
+/* Header Navigation */
+.hero-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 60px;
+  z-index: 100;
+  box-sizing: border-box;
+}
+
+.logo {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.3s ease;
+}
+
+.menu-btn {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.3s ease;
+  mix-blend-mode: difference; /* Inverts color over light backgrounds so it is always visible! */
+}
+
+.logo:hover,
+.menu-btn:hover {
+  opacity: 0.8;
+}
+
+.logo-img {
+  height: 64px;
+  width: auto;
+  object-fit: contain;
+}
+
+/* Responsive Red Circle Layout */
+.red-circle-container {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 1600px;
+  display: flex;
+  justify-content: center;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.red-circle-svg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Typography & Layout */
 .hero-content {
   text-align: center;
   z-index: 10;
-  padding: 0 20px;
+  padding: 0 5%;
+  position: relative;
+  margin-top: -6vh;
+  /* Visually centers the text, offsetting the top circle */
 }
 
 .main-title {
-  font-size: 5rem; /* Adjust based on your preference */
+  /* Fluid typography: scales dynamically between 2.5rem and 5.5rem based on screen width */
+  font-size: clamp(2.5rem, 6vw, 5.5rem);
   font-weight: 600;
   line-height: 1.1;
   margin-bottom: 20px;
+  letter-spacing: -0.02em;
 }
 
 .sub-title {
-  font-size: 1.2rem;
+  /* Fluid typography for the subtitle */
+  font-size: clamp(1rem, 2vw, 1.25rem);
   color: #d4d4d4;
   margin-bottom: 50px;
-}
-
-/* Diagonal Marquee */
-.marquee-wrapper {
-  position: absolute;
-  top: 50%; /* Adjust vertical placement */
-  left: -10%;
-  width: 120%;
-  transform: rotate(-5deg) translateY(-50%);
-  z-index: 5;
-}
-
-.marquee-container {
-  background: #fff;
-  color: #000;
-  padding: 15px 0;
-  overflow: hidden;
-  white-space: nowrap;
-  border-top: 1px solid #000;
-  border-bottom: 1px solid #000;
-}
-
-.marquee-content {
-  display: inline-block;
-  font-size: 1.5rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  animation: scrollText 15s linear infinite;
-}
-
-@keyframes scrollText {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(-50%); } /* Requires the text to be repeated twice in the HTML for seamless loop */
+  font-weight: 400;
 }
 
 /* Scroll Indicator */
 .scroll-indicator {
   position: absolute;
   bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  /* Keeps it perfectly centered */
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 15px;
+  z-index: 10;
 }
 
 .scroll-indicator span {
-  font-size: 0.8rem;
+  font-size: 0.75rem;
   letter-spacing: 0.2em;
   text-transform: uppercase;
+  color: #fff;
 }
 
 .scroll-line {
   width: 1px;
   height: 60px;
-  background: rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.2);
   position: relative;
   overflow: hidden;
 }
@@ -124,6 +172,40 @@
 }
 
 @keyframes scrollLine {
-  0% { top: -50%; }
-  100% { top: 150%; }
+  0% {
+    top: -50%;
+  }
+
+  100% {
+    top: 150%;
+  }
+}
+
+/* Mobile & Tablet Adjustments */
+@media (max-width: 768px) {
+  .red-circle-container {
+    width: 180vw;
+    /* Keeps the circle wider and shallow on smaller viewports */
+    max-width: none;
+  }
+
+  .hero-header {
+    padding: 15px 25px;
+  }
+
+  .logo-img {
+    height: 48px;
+  }
+
+  .hero-content {
+    margin-top: 5vh;
+  }
+
+  .scroll-indicator {
+    bottom: 25px;
+  }
+
+  .scroll-line {
+    height: 40px;
+  }
 }

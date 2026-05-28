@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import cpLogo from './assets/logo.png';
 import './Hero.css';
 
 const Hero = () => {
   const [showIntro, setShowIntro] = useState(true);
 
-  // This removes the intro text after 3 seconds to reveal the main site
+  // Removes the intro text after 3 seconds
   useEffect(() => {
     const timer = setTimeout(() => {
       setShowIntro(false);
@@ -41,6 +42,80 @@ const Hero = () => {
             animate={{ opacity: 1 }}
             transition={{ duration: 1 }}
           >
+            {/* Header Navigation */}
+            <header className="hero-header">
+              <div className="logo">
+                <img src={cpLogo} alt="CP Logo" className="logo-img" />
+              </div>
+              <div className="menu-btn">
+                <svg width="32" height="20" viewBox="0 0 32 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M16 4H30" stroke="white" strokeWidth="2.5" strokeLinecap="round"/>
+                  <path d="M8 10H30" stroke="white" strokeWidth="2.5" strokeLinecap="round"/>
+                  <path d="M2 16H30" stroke="white" strokeWidth="2.5" strokeLinecap="round"/>
+                </svg>
+              </div>
+            </header>
+
+            {/* Red Circle Background */}
+            <div className="red-circle-container">
+              <svg 
+                viewBox="0 0 1000 400" 
+                className="red-circle-svg"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                {/* Outermost Concentric Ring 3 */}
+                <motion.circle 
+                  cx="500" 
+                  cy="-300" 
+                  r="510" 
+                  fill="none" 
+                  stroke="#FF0000" 
+                  strokeWidth="2.5"
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 1.8, delay: 0.4, ease: "easeOut" }}
+                  style={{ transformOrigin: "500px -300px" }}
+                />
+                {/* Concentric Ring 2 */}
+                <motion.circle 
+                  cx="500" 
+                  cy="-300" 
+                  r="490" 
+                  fill="none" 
+                  stroke="#FF0000" 
+                  strokeWidth="2.5"
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 1.6, delay: 0.2, ease: "easeOut" }}
+                  style={{ transformOrigin: "500px -300px" }}
+                />
+                {/* Concentric Ring 1 */}
+                <motion.circle 
+                  cx="500" 
+                  cy="-300" 
+                  r="460" 
+                  fill="none" 
+                  stroke="#FF0000" 
+                  strokeWidth="2.5"
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 1.4, delay: 0.1, ease: "easeOut" }}
+                  style={{ transformOrigin: "500px -300px" }}
+                />
+                {/* Solid Red Circle */}
+                <motion.circle 
+                  cx="500" 
+                  cy="-300" 
+                  r="400" 
+                  fill="#FF0000"
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 1.2, ease: "easeOut" }}
+                  style={{ transformOrigin: "500px -300px" }}
+                />
+              </svg>
+            </div>
+
             <div className="hero-content">
               <motion.h1
                 initial={{ y: 30, opacity: 0 }}
@@ -61,15 +136,6 @@ const Hero = () => {
               </motion.p>
             </div>
 
-            {/* Diagonal Marquee */}
-            <div className="marquee-wrapper">
-              <div className="marquee-container">
-                <div className="marquee-content">
-                  New Portfolio Site Coming Soon — New Portfolio Site Coming Soon — New Portfolio Site Coming Soon — New Portfolio Site Coming Soon — 
-                </div>
-              </div>
-            </div>
-
             {/* Scroll Indicator */}
             <motion.div 
               className="scroll-indicator"
@@ -77,7 +143,7 @@ const Hero = () => {
               animate={{ opacity: 1 }}
               transition={{ delay: 1.5, duration: 1 }}
             >
-              <span>SCROLL</span>
+              <span>SCROLL DOWN</span>
               <div className="scroll-line"></div>
             </motion.div>
           </motion.div>

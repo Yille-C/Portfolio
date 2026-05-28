@@ -1,0 +1,214 @@
+/* About Me Section Layout */
+.about-section {
+  background-color: #ffffff;
+  color: #000000;
+  padding: 100px 0 140px 0;
+  width: 100%;
+  font-family: 'Inter', sans-serif;
+  box-sizing: border-box;
+  position: relative;
+}
+
+.about-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 40px;
+}
+
+/* Header with Red Strike-through */
+.about-header {
+  margin-bottom: 60px;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.about-section-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  color: #000000;
+  position: relative;
+  display: inline-block;
+  margin: 0;
+  padding: 5px 0;
+}
+
+.about-section-title::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 2px;
+  background-color: #FF0000;
+  transform: translateY(-50%);
+}
+
+/* Grid Layout */
+.about-grid {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: 80px;
+  align-items: start;
+}
+
+/* Left Column Styling */
+.about-col-left {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.about-greeting {
+  font-size: clamp(2.5rem, 5.5vw, 4.8rem);
+  font-weight: 800;
+  line-height: 1.1;
+  color: #000000;
+  margin: 0;
+  letter-spacing: -0.03em;
+}
+
+/* Cyan divider line under greeting */
+.about-cyan-line {
+  width: 130px;
+  height: 4px;
+  background-color: #FF0000;
+  ;
+  /* Cyan/mint color from Image 3 */
+  border-radius: 2px;
+  margin: 24px 0 40px 0;
+}
+
+/* Right Column Styling */
+.about-col-right {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  justify-content: space-between;
+}
+
+.about-bio-content {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.about-bio-text {
+  font-size: 1.3rem;
+  line-height: 1.6;
+  color: #2b2b2b;
+  margin: 0;
+  font-weight: 400;
+}
+
+.about-quote {
+  font-size: 1.25rem;
+  line-height: 1.6;
+  color: #666666;
+  font-style: italic;
+  margin: 0;
+  border-left: 3px solid rgba(0, 0, 0, 0.1);
+  padding-left: 16px;
+  font-weight: 400;
+}
+
+/* Know More Link */
+.about-link-container {
+  margin-top: 60px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.about-more-link {
+  font-size: 1.05rem;
+  color: #1a1a1a;
+  text-decoration: none;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: gap 0.2s ease, color 0.2s ease;
+}
+
+.about-more-link .arrow {
+  transition: transform 0.2s ease;
+}
+
+.about-more-link:hover {
+  color: #000000;
+}
+
+.about-more-link:hover .arrow {
+  transform: translateX(4px);
+}
+
+/* Interactive Magnetic Button Styles */
+.magnetic-btn-wrapper {
+  position: relative;
+  width: 160px;
+  height: 160px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.magnetic-btn-fill {
+  width: 130px;
+  height: 130px;
+  border-radius: 50%;
+  background-color: #000000;
+  border: none;
+  color: #ffffff;
+  font-size: 1.05rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  z-index: 2;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  outline: none;
+}
+
+.magnetic-btn-text {
+  pointer-events: none;
+}
+
+.magnetic-btn-outline {
+  width: 146px;
+  height: 146px;
+  border-radius: 50%;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  position: absolute;
+  z-index: 1;
+  pointer-events: none;
+  transition: border-color 0.3s ease;
+}
+
+.magnetic-btn-outline.active {
+  border-color: rgba(0, 0, 0, 0.6);
+}
+
+/* Mobile & Tablet Adjustments */
+@media (max-width: 768px) {
+  .about-section {
+    padding: 60px 0 80px 0;
+  }
+
+  .about-grid {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+
+  .about-cyan-line {
+    margin: 20px 0 30px 0;
+  }
+
+  .about-link-container {
+    margin-top: 40px;
+    justify-content: flex-start;
+  }
+}

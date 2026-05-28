@@ -1,0 +1,123 @@
+/* Clients/Ribbons Section Layout */
+.clients-section {
+  /* Diagonal-looking transition achieved by a sharp 50% split */
+  background: linear-gradient(to bottom, #000 50%, #fff 50%);
+  min-height: 480px;
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  font-family: 'Inter', sans-serif;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Ribbons Wrapper */
+.ribbons-wrapper {
+  position: relative;
+  height: 220px;
+  width: 100%;
+}
+
+.ribbon {
+  position: absolute;
+  width: 250vw;
+  left: 50%;
+  padding: 16px 0;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.45);
+  box-sizing: border-box;
+}
+
+/* Ribbon 1: Dark (Angled Downward) */
+.ribbon-dark {
+  background-color: #0c0c0c;
+  color: #fff;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  top: 80px;
+  transform: translate(-50%, -50%) rotate(-4deg);
+  z-index: 10;
+}
+
+/* Ribbon 2: Light (Angled Upward) */
+.ribbon-light {
+  background-color: #fff;
+  color: #000;
+  top: 130px;
+  transform: translate(-50%, -50%) rotate(3.5deg);
+  z-index: 20;
+}
+
+/* Ribbon Track */
+.ribbon-track {
+  display: flex;
+  width: max-content;
+}
+
+.ribbon-track span {
+  font-size: 1.8rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  /* Extra spacing for continuous seamless repeat */
+  padding-right: 0px; 
+}
+
+/* Track Animations - Slower marquee speed for readability */
+.track-left {
+  animation: marquee-left 50s linear infinite;
+}
+
+.track-right {
+  animation: marquee-right 50s linear infinite;
+}
+
+@keyframes marquee-left {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes marquee-right {
+  0% {
+    transform: translateX(-50%);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 900px) {
+  .clients-section {
+    min-height: 380px;
+  }
+
+  .ribbons-wrapper {
+    height: 180px;
+  }
+  
+  .ribbon-dark {
+    top: 65px;
+  }
+
+  .ribbon-light {
+    top: 105px;
+  }
+
+  .ribbon {
+    padding: 12px 0;
+  }
+  
+  .ribbon-track span {
+    font-size: 1.3rem;
+  }
+}
