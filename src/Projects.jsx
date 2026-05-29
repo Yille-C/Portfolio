@@ -155,18 +155,6 @@ const lineVariants = {
 const Projects = () => {
   const [activeProject, setActiveProject] = useState(null);
 
-  // Prevent background scroll when modal is open
-  useEffect(() => {
-    if (activeProject) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = '';
-    }
-    return () => {
-      document.body.style.overflow = '';
-    };
-  }, [activeProject]);
-
   return (
     <section className="projects-section" id="projects">
       <div className="projects-container">
@@ -214,167 +202,165 @@ const Projects = () => {
         <div className="projects-grid">
           {projectsData.map((project, index) => {
             const isEven = (index + 1) % 2 === 0;
+            const isActive = activeProject && activeProject.id === project.id;
+
             return (
               <motion.div
                 key={project.id}
-                className="project-item"
+                className={`project-item-reveal-wrapper ${isActive ? 'is-active' : ''}`}
                 variants={projectItemVariants}
                 initial={isEven ? "hiddenRight" : "hiddenLeft"}
                 whileInView="visible"
-                viewport={{ once: false, amount: 0.15 }}
+                viewport={{ once: true, amount: 0.15 }}
               >
-                {/* Mockup Card Container */}
-                <div
-                  className="project-card"
-                  onClick={() => setActiveProject(project)}
+                <motion.div
+                  className={`project-item-wrapper ${isActive ? 'is-active' : ''}`}
+                  layout
+                  transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
                 >
-                  <div className="device-screen-wrapper">
-                    <img
-                      src={project.hover || project.image}
-                      alt={`${project.name} preview`}
-                      className="project-image is-gif"
-                    />
-                  </div>
-                </div>
+                  {/* Mockup Card Container */}
+                  <motion.div
+                    layout
+                    className={`project-card-container ${isActive ? 'is-expanded' : ''} ${isActive && isEven ? 'is-right-bleed' : ''}`}
+                    onClick={isActive ? undefined : () => setActiveProject(project)}
+                    transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+                  >
+                    {/* Left detailed content (only when expanded) */}
+                    <AnimatePresence mode="popLayout">
+                      {isActive && (
+                        <motion.div
+                          key="expanded-left"
+                          className="expanded-content-left"
+                          style={{ order: isEven ? 3 : 1 }}
+                          initial={{ opacity: 0, x: isEven ? 30 : -30 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          exit={{ opacity: 0, x: isEven ? 30 : -30, transition: { duration: 0.2 } }}
+                          transition={{ delay: 0.15, duration: 0.5, ease: "easeOut" }}
+                        >
+                          {/* Project Header */}
+                          <div className="expanded-header">
+                            <h2 className="expanded-title">
+                              {project.name}
+                              <motion.span 
+                                className="expanded-strikeout" 
+                                initial={{ scaleX: 0 }}
+                                animate={{ scaleX: 1 }}
+                                exit={{ scaleX: 0 }}
+                                transition={{ delay: 0.3, duration: 0.5, ease: "easeInOut" }}
+                              />
+                            </h2>
+                            <div className="expanded-role">
+                              <span className="expanded-role-label">Role</span>
+                              <span className="expanded-role-value">{project.role}</span>
+                            </div>
+                          </div>
 
-                {/* Project Info Block */}
-                <div className="project-info-row">
-                  <div className="project-meta-left">
-                    <motion.span
-                      className="project-bold-name"
-                      variants={textFadeVariants}
-                      onClick={() => setActiveProject(project)}
+                          {/* Description Section */}
+                          <div className="expanded-section">
+                            <h3 className="expanded-section-title">Description</h3>
+                            <div className="expanded-divider"></div>
+                            <p className="expanded-description-text">{project.description}</p>
+                          </div>
+
+                          {/* Tech Stack Section */}
+                          <div className="expanded-section">
+                            <h3 className="expanded-section-title">Tech Stack</h3>
+                            <div className="expanded-divider"></div>
+                            <div className="expanded-tech-list">
+                              {Object.entries(project.techStack).map(([key, value]) => (
+                                <div className="expanded-tech-row" key={key}>
+                                  <span className="expanded-tech-key">{key.charAt(0).toUpperCase() + key.slice(1)}</span>
+                                  <span className="expanded-tech-value">{value}</span>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+
+                    {/* Image Container (Always Rendered, with class & order toggled for animation) */}
+                    <motion.div
+                      layout
+                      className={`project-device-image-container ${isActive ? 'is-expanded' : ''}`}
+                      style={{ order: 2 }}
+                      transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
                     >
-                      {project.name}
-                    </motion.span>
-                    <motion.span
-                      className="project-intro-text"
-                      variants={textFadeVariants}
-                    >
-                      {project.intro}
-                    </motion.span>
-                  </div>
-                  <div className="project-meta-right">
-                    <motion.span
-                      className="project-role-label"
-                      variants={textFadeVariants}
-                    >
-                      ROLE
-                    </motion.span>
-                    <motion.span
-                      className="project-role-value"
-                      variants={textFadeVariants}
-                    >
-                      {project.role}
-                    </motion.span>
-                  </div>
-                </div>
+                      <motion.img
+                        layout
+                        src={project.hover || project.image}
+                        alt={`${project.name} preview`}
+                        className={`project-image-el ${isActive ? 'is-expanded' : 'is-gif'}`}
+                        transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+                      />
+                    </motion.div>
+
+                    {/* Collapse Button (Close X) */}
+                    <AnimatePresence mode="popLayout">
+                      {isActive && (
+                        <motion.button 
+                          key="close-btn"
+                          className="expanded-close-btn"
+                          style={{ order: isEven ? 1 : 3 }}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setActiveProject(null);
+                          }}
+                          aria-label="Collapse project details"
+                          initial={{ opacity: 0, scale: 0.8 }}
+                          animate={{ opacity: 1, scale: 1 }}
+                          exit={{ opacity: 0, scale: 0.8, transition: { duration: 0.2 } }}
+                          transition={{ duration: 0.3 }}
+                        >
+                          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                            <line x1="18" y1="6" x2="6" y2="18"></line>
+                            <line x1="6" y1="6" x2="18" y2="18"></line>
+                          </svg>
+                        </motion.button>
+                      )}
+                    </AnimatePresence>
+                  </motion.div>
+
+                  {/* Info block below card (only when collapsed) */}
+                  <AnimatePresence>
+                    {!isActive && (
+                      <motion.div
+                        key="normal-info"
+                        className="project-info-row"
+                        initial={{ opacity: 0, y: 15 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: 15, transition: { duration: 0.2 } }}
+                        transition={{ duration: 0.4, ease: "easeOut" }}
+                      >
+                        <div className="project-meta-left">
+                          <span
+                            className="project-bold-name"
+                            onClick={() => setActiveProject(project)}
+                          >
+                            {project.name}
+                          </span>
+                          <span className="project-intro-text">
+                            {project.intro}
+                          </span>
+                        </div>
+                        <div className="project-meta-right">
+                          <span className="project-role-label">
+                            ROLE
+                          </span>
+                          <span className="project-role-value">
+                            {project.role}
+                          </span>
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </motion.div>
               </motion.div>
             );
           })}
         </div>
 
       </div>
-
-      {/* Detail Modal */}
-      <AnimatePresence>
-        {activeProject && (
-          <motion.div
-            className="project-modal-backdrop"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            onClick={() => setActiveProject(null)}
-          >
-            <motion.div
-              className="project-modal-window"
-              initial={{ y: 50, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              exit={{ y: 50, opacity: 0 }}
-              transition={{ type: "spring", stiffness: 300, damping: 30 }}
-              onClick={(e) => e.stopPropagation()}
-            >
-              {/* Modal Header */}
-              <div className="project-modal-header">
-                <motion.a
-                  href={activeProject.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="project-modal-title"
-                  initial={{ y: 20, opacity: 0 }}
-                  animate={{ y: 0, opacity: 1 }}
-                  transition={{ delay: 0.1, duration: 0.5, ease: "easeOut" }}
-                >
-                  {activeProject.name}
-                </motion.a>
-                <motion.button
-                  className="project-modal-close-btn"
-                  onClick={() => setActiveProject(null)}
-                  aria-label="Close modal"
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ delay: 0.15, duration: 0.4, ease: "easeOut" }}
-                >
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
-                    <line x1="18" y1="6" x2="6" y2="18"></line>
-                    <line x1="6" y1="6" x2="18" y2="18"></line>
-                  </svg>
-                </motion.button>
-              </div>
-
-              {/* Modal Details Grid */}
-              <div className="project-modal-grid">
-                {/* Left Column: Description */}
-                <motion.div
-                  className="project-modal-col-left"
-                  initial={{ y: 30, opacity: 0 }}
-                  animate={{ y: 0, opacity: 1 }}
-                  transition={{ delay: 0.25, duration: 0.6, ease: "easeOut" }}
-                >
-                  <h3 className="project-modal-section-title">DESCRIPTION</h3>
-                  <div className="title-divider"></div>
-                  <p className="project-modal-description-text">
-                    {activeProject.description}
-                  </p>
-                </motion.div>
-
-                {/* Right Column: Tech Stack */}
-                <motion.div
-                  className="project-modal-col-right"
-                  initial={{ y: 30, opacity: 0 }}
-                  animate={{ y: 0, opacity: 1 }}
-                  transition={{ delay: 0.35, duration: 0.6, ease: "easeOut" }}
-                >
-                  <h3 className="project-modal-section-title">TECH STACK</h3>
-                  <div className="title-divider"></div>
-                  <div className="project-modal-tech-list">
-                    {Object.entries(activeProject.techStack).map(([key, value]) => (
-                      <div className="tech-stack-row" key={key}>
-                        <span className="tech-stack-key">{key.charAt(0).toUpperCase() + key.slice(1)}</span>
-                        <span className="tech-stack-value">{value}</span>
-                      </div>
-                    ))}
-                  </div>
-                </motion.div>
-              </div>
-
-              {/* Large Mockup Showcase */}
-              <motion.div
-                className="project-modal-showcase"
-                initial={{ y: 40, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ delay: 0.45, duration: 0.7, ease: "easeOut" }}
-              >
-                <img
-                  src={activeProject.hover || activeProject.image}
-                  alt={`${activeProject.name} detail mockup`}
-                  className="project-modal-image"
-                />
-              </motion.div>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
     </section>
   );
 };
