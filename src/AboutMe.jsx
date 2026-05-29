@@ -1,6 +1,7 @@
-import React, { useRef, useState } from 'react';
-import { motion } from 'framer-motion';
+import { useRef, useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import './AboutMe.css';
+import formalImg from './assets/formal.jpg';
 
 const titleContainerVariants = {
   hidden: {},
@@ -46,44 +47,63 @@ const typewriterLetter = {
 };
 
 const AboutMe = () => {
-  const buttonRef = useRef(null);
-  const [coords, setCoords] = useState({ x: 0, y: 0 });
-  const [isHovered, setIsHovered] = useState(false);
-
-  const handleMouseMove = (e) => {
-    if (!buttonRef.current) return;
-    const rect = buttonRef.current.getBoundingClientRect();
-    // Calculate distance from center of the button
-    const x = e.clientX - (rect.left + rect.width / 2);
-    const y = e.clientY - (rect.top + rect.height / 2);
-
-    // Limits the translation reach
-    const maxTranslate = 20;
-
-    // Scale coordinates based on mouse position relative to boundary
-    const percentX = x / (rect.width / 2);
-    const percentY = y / (rect.height / 2);
-
-    setCoords({
-      x: percentX * maxTranslate,
-      y: percentY * maxTranslate
-    });
-  };
-
-  const handleMouseEnter = () => {
-    setIsHovered(true);
-  };
-
-  const handleMouseLeave = () => {
-    setIsHovered(false);
-    setCoords({ x: 0, y: 0 });
-  };
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleReachOutClick = () => {
     const contactSection = document.querySelector('.contact-section');
     if (contactSection) {
       contactSection.scrollIntoView({ behavior: 'smooth' });
     }
+  };
+
+  useEffect(() => {
+    if (isModalOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [isModalOpen]);
+
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') {
+        setIsModalOpen(false);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
+
+  const moreButtonRef = useRef(null);
+  const [coordsMore, setCoordsMore] = useState({ x: 0, y: 0 });
+  const [isHoveredMore, setIsHoveredMore] = useState(false);
+
+  const handleMouseMoveMore = (e) => {
+    if (!moreButtonRef.current) return;
+    const rect = moreButtonRef.current.getBoundingClientRect();
+    const x = e.clientX - (rect.left + rect.width / 2);
+    const y = e.clientY - (rect.top + rect.height / 2);
+
+    const maxTranslate = 20;
+    const percentX = x / (rect.width / 2);
+    const percentY = y / (rect.height / 2);
+
+    setCoordsMore({
+      x: percentX * maxTranslate,
+      y: percentY * maxTranslate
+    });
+  };
+
+  const handleMouseEnterMore = () => {
+    setIsHoveredMore(true);
+  };
+
+  const handleMouseLeaveMore = () => {
+    setIsHoveredMore(false);
+    setCoordsMore({ x: 0, y: 0 });
   };
 
   return (
@@ -145,48 +165,17 @@ const AboutMe = () => {
 
             {/* Buttons Flex Row */}
             <div className="about-buttons-row">
-              {/* Interactive Magnetic Button Container */}
-              <motion.div
-                ref={buttonRef}
-                className="magnetic-btn-wrapper"
-                onMouseMove={handleMouseMove}
-                onMouseEnter={handleMouseEnter}
-                onMouseLeave={handleMouseLeave}
-                initial={{ opacity: 0, scale: 0.8 }}
-                whileInView={{ opacity: 1, scale: 1 }}
+              {/* Reach Out Pill Button (Red outlined style matching resume button) */}
+              <motion.button
+                onClick={handleReachOutClick}
+                className="reach-out-btn"
+                initial={{ opacity: 0, y: 25 }}
+                whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: false, amount: 0.3 }}
                 transition={{ duration: 0.6, delay: 0.4, ease: "easeOut" }}
               >
-                {/* Outer floating outline ring */}
-                <div
-                  className={`magnetic-btn-outline ${isHovered ? 'active' : ''}`}
-                  style={{
-                    transform: `translate(${coords.x * 1.4}px, ${coords.y * 1.4}px)`,
-                    transition: isHovered ? 'transform 0.08s ease-out' : 'transform 0.4s cubic-bezier(0.25, 1, 0.5, 1)'
-                  }}
-                />
-
-                {/* Inner solid button fill */}
-                <button
-                  className="magnetic-btn-fill"
-                  onClick={handleReachOutClick}
-                  style={{
-                    transform: `translate(${coords.x * 0.8}px, ${coords.y * 0.8}px)`,
-                    transition: isHovered ? 'transform 0.08s ease-out' : 'transform 0.4s cubic-bezier(0.25, 1, 0.5, 1)'
-                  }}
-                >
-                  <span
-                    className="magnetic-btn-text"
-                    style={{
-                      display: 'inline-block',
-                      transform: `translate(${coords.x * 0.3}px, ${coords.y * 0.3}px)`,
-                      transition: isHovered ? 'transform 0.08s ease-out' : 'transform 0.4s cubic-bezier(0.25, 1, 0.5, 1)'
-                    }}
-                  >
-                    Reach Out &rarr;
-                  </span>
-                </button>
-              </motion.div>
+                Reach Out <span className="arrow">&rarr;</span>
+              </motion.button>
 
               {/* Download Resume Pill Button */}
               <motion.a
@@ -226,21 +215,180 @@ const AboutMe = () => {
               </motion.blockquote>
             </div>
 
-            {/* Know More link at the bottom right */}
+            {/* Know More button centered below the quote */}
             <motion.div
-              className="about-link-container"
+              className="about-link-container-centered"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: false, amount: 0.3 }}
               transition={{ duration: 0.6, delay: 0.4, ease: "easeOut" }}
             >
-              <a href="#more" className="about-more-link">
-                Know more about me <span className="arrow">&rarr;</span>
-              </a>
+              <motion.div
+                ref={moreButtonRef}
+                className="magnetic-btn-wrapper"
+                onMouseMove={handleMouseMoveMore}
+                onMouseEnter={handleMouseEnterMore}
+                onMouseLeave={handleMouseLeaveMore}
+              >
+                {/* Outer floating outline ring */}
+                <div
+                  className={`magnetic-btn-outline ${isHoveredMore ? 'active' : ''}`}
+                  style={{
+                    transform: `translate(${coordsMore.x * 1.4}px, ${coordsMore.y * 1.4}px)`,
+                    transition: isHoveredMore ? 'transform 0.08s ease-out' : 'transform 0.4s cubic-bezier(0.25, 1, 0.5, 1)'
+                  }}
+                />
+
+                {/* Inner solid button fill */}
+                <button
+                  className="magnetic-btn-fill"
+                  onClick={() => setIsModalOpen(true)}
+                  style={{
+                    transform: `translate(${coordsMore.x * 0.8}px, ${coordsMore.y * 0.8}px)`,
+                    transition: isHoveredMore ? 'transform 0.08s ease-out' : 'transform 0.4s cubic-bezier(0.25, 1, 0.5, 1)'
+                  }}
+                >
+                  <span
+                    className="magnetic-btn-text"
+                    style={{
+                      display: 'flex',
+                      flexDirection: 'column',
+                      alignItems: 'center',
+                      lineHeight: '1.25',
+                      fontSize: '0.95rem',
+                      fontWeight: '600',
+                      transform: `translate(${coordsMore.x * 0.3}px, ${coordsMore.y * 0.3}px)`,
+                      transition: isHoveredMore ? 'transform 0.08s ease-out' : 'transform 0.4s cubic-bezier(0.25, 1, 0.5, 1)'
+                    }}
+                  >
+                    <span>Know more</span>
+                    <span>about me</span>
+                  </span>
+                </button>
+              </motion.div>
             </motion.div>
           </div>
         </div>
       </div>
+
+      {/* Modal Backdrop and Content */}
+      <AnimatePresence>
+        {isModalOpen && (
+          <motion.div
+            className="modal-overlay"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setIsModalOpen(false)}
+          >
+            <motion.div
+              className="modal-content"
+              initial={{ y: "-100vh" }}
+              animate={{ y: 0 }}
+              exit={{ y: "-100vh" }}
+              transition={{ type: "spring", damping: 25, stiffness: 120 }}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <button 
+                className="modal-close-btn"
+                onClick={() => setIsModalOpen(false)}
+                aria-label="Close modal"
+              >
+                &times;
+              </button>
+
+              <div className="modal-inner">
+                <motion.div 
+                  className="modal-profile-container"
+                  initial={{ scale: 0.5, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  transition={{ delay: 0.2, duration: 0.5, ease: "easeOut" }}
+                >
+                  <img src={formalImg} alt="Carille Peran" className="modal-profile-img" />
+                </motion.div>
+
+                <motion.h2 
+                  className="modal-title"
+                  initial={{ y: 20, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  transition={{ delay: 0.3, duration: 0.5, ease: "easeOut" }}
+                >
+                  I'm Carille Peran, nice to meet you!
+                </motion.h2>
+
+                <motion.p 
+                  className="modal-bio"
+                  initial={{ y: 20, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  transition={{ delay: 0.4, duration: 0.6, ease: "easeOut" }}
+                >
+                  I'm a 22-year-old Front-End developer and Quality Assurance enthusiast who loves to create clean, responsive, intuitive web applications. I focuses on building modern, beautiful, and performant websites and web applications across different devices and platforms. I strive to balance form and function to build user interfaces that are fast, reliable, and easy to use.
+                </motion.p>
+
+                <motion.div 
+                  className="modal-skills-section"
+                  initial={{ y: 25, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  transition={{ delay: 0.5, duration: 0.6, ease: "easeOut" }}
+                >
+                  <h3 className="modal-skills-title">Skills</h3>
+                  <ul className="modal-skills-list">
+                    <motion.li 
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.6 }}
+                    >
+                      Java
+                    </motion.li>
+                    <motion.li 
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.65 }}
+                    >
+                      C#
+                    </motion.li>
+                    <motion.li 
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.7 }}
+                    >
+                      HTML
+                    </motion.li>
+                    <motion.li 
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.75 }}
+                    >
+                      Javascript
+                    </motion.li>
+                    <motion.li 
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.8 }}
+                    >
+                      CSS
+                    </motion.li>
+                    <motion.li 
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.85 }}
+                    >
+                      React
+                    </motion.li>
+                    <motion.li 
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.9 }}
+                    >
+                      manual/automated testing
+                    </motion.li>
+                  </ul>
+                </motion.div>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </section>
   );
 };

@@ -21,7 +21,7 @@ const projectsData = [
     description: 'Feasify is a web-based project management platform tailored for collaborative feasibility studies. It streamlines team workflows by providing structured modules for documentation, financial analysis, risk assessment, and milestone tracking. The system enables real-time collaboration, automatic report generation, and role-based permissions, allowing organizations to evaluate projects efficiently.',
     techStack: {
       frontend: 'React, TypeScript, TailwindCSS',
-      backend: 'N/A (Static Web)'
+      backend: 'Firebase(NoSQL), Node.js, Gemini API'
     },
     url: 'https://feasify.vercel.app'
   },
@@ -35,7 +35,7 @@ const projectsData = [
     description: 'ReClaim is a digital campus platform designed to recover and track lost-and-found items. It streamlines reporting, ownership verification, and item retrieval. Built to establish transparency within the university community, it features real-time notifications, category filtering, search mechanisms, and secure user profiles.',
     techStack: {
       frontend: 'React, JavaScript, CSS',
-      backend: 'Node.js, Express, Firebase'
+      backend: 'Node.js, Express, Supabase'
     },
     url: 'https://github.com/Yille-C/ReClaim'
   },
@@ -49,7 +49,7 @@ const projectsData = [
     description: 'Rise of the Bakunawa is a hybrid tabletop and video game adaptation celebrating Philippine mythology. Players control factions of tribesmen coordinating their tactical abilities to combat the mythical colossal dragon Bakunawa. The game features grid-based tactics, card management mechanics, and epic phase-based boss challenges.',
     techStack: {
       engine: 'Unity, C#',
-      target: 'PC / Desktop Standalone'
+      target: 'PC / Desktop Standalone, Android'
     },
     url: 'https://github.com/Yille-C/Rise-of-the-Bakunawa'
   },
@@ -72,27 +72,27 @@ const projectsData = [
 const projectItemVariants = {
   hiddenLeft: { opacity: 0, x: -120 },
   hiddenRight: { opacity: 0, x: 120 },
-  visible: { 
-    opacity: 1, 
-    x: 0, 
-    transition: { 
-      duration: 0.9, 
+  visible: {
+    opacity: 1,
+    x: 0,
+    transition: {
+      duration: 0.9,
       ease: [0.16, 1, 0.3, 1], // easeOutExpo
       staggerChildren: 0.08,
       delayChildren: 0.1
-    } 
+    }
   }
 };
 
 const textFadeVariants = {
   hidden: { opacity: 0, y: 25 },
-  visible: { 
-    opacity: 1, 
-    y: 0, 
-    transition: { 
-      duration: 0.6, 
-      ease: "easeOut" 
-    } 
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.6,
+      ease: "easeOut"
+    }
   }
 };
 
@@ -107,8 +107,8 @@ const titleContainerVariants = {
 
 const letterVariants = {
   hidden: { opacity: 0, y: 8 },
-  visible: { 
-    opacity: 1, 
+  visible: {
+    opacity: 1,
     y: 0,
     transition: { duration: 0.3, ease: "easeOut" }
   }
@@ -116,7 +116,7 @@ const letterVariants = {
 
 const lineVariants = {
   hidden: { scaleX: 0 },
-  visible: { 
+  visible: {
     scaleX: 1,
     transition: { duration: 0.6, delay: 0.4, ease: "easeInOut" }
   }
@@ -143,7 +143,7 @@ const Projects = () => {
 
         {/* Projects Section Header */}
         <div className="projects-header-wrapper">
-          <motion.h2 
+          <motion.h2
             className="projects-section-title"
             variants={titleContainerVariants}
             initial="hidden"
@@ -151,18 +151,18 @@ const Projects = () => {
             viewport={{ once: false, amount: 0.3 }}
           >
             {"PROJECTS".split("").map((char, index) => (
-              <motion.span 
-                key={index} 
-                variants={letterVariants} 
+              <motion.span
+                key={index}
+                variants={letterVariants}
                 style={{ display: "inline-block", whiteSpace: "pre" }}
               >
                 {char}
               </motion.span>
             ))}
-            <motion.span 
-              className="strikeout-line" 
-              variants={lineVariants} 
-              style={{ originX: 0 }} 
+            <motion.span
+              className="strikeout-line"
+              variants={lineVariants}
+              style={{ originX: 0 }}
             />
           </motion.h2>
         </div>
@@ -176,7 +176,7 @@ const Projects = () => {
             viewport={{ once: false, amount: 0.3 }}
             transition={{ duration: 1, ease: "easeOut" }}
           >
-            BUILT<br />WITH<br />PASSION,
+            BUILD<br />CLEANLY,<br />TEST <br /> THOROUGHLY.<br />
           </motion.h1>
         </div>
 
@@ -194,7 +194,7 @@ const Projects = () => {
                 viewport={{ once: false, amount: 0.15 }}
               >
                 {/* Mockup Card Container */}
-                <div 
+                <div
                   className="project-card"
                   onClick={() => setActiveProject(project)}
                 >
@@ -210,14 +210,14 @@ const Projects = () => {
                 {/* Project Info Block */}
                 <div className="project-info-row">
                   <div className="project-meta-left">
-                    <motion.span 
+                    <motion.span
                       className="project-bold-name"
                       variants={textFadeVariants}
                       onClick={() => setActiveProject(project)}
                     >
                       {project.name}
                     </motion.span>
-                    <motion.span 
+                    <motion.span
                       className="project-intro-text"
                       variants={textFadeVariants}
                     >
@@ -225,13 +225,13 @@ const Projects = () => {
                     </motion.span>
                   </div>
                   <div className="project-meta-right">
-                    <motion.span 
+                    <motion.span
                       className="project-role-label"
                       variants={textFadeVariants}
                     >
                       ROLE
                     </motion.span>
-                    <motion.span 
+                    <motion.span
                       className="project-role-value"
                       variants={textFadeVariants}
                     >
@@ -249,14 +249,14 @@ const Projects = () => {
       {/* Detail Modal */}
       <AnimatePresence>
         {activeProject && (
-          <motion.div 
+          <motion.div
             className="project-modal-backdrop"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={() => setActiveProject(null)}
           >
-            <motion.div 
+            <motion.div
               className="project-modal-window"
               initial={{ y: 50, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
@@ -266,15 +266,15 @@ const Projects = () => {
             >
               {/* Modal Header */}
               <div className="project-modal-header">
-                <a 
-                  href={activeProject.url} 
-                  target="_blank" 
+                <a
+                  href={activeProject.url}
+                  target="_blank"
                   rel="noopener noreferrer"
                   className="project-modal-title"
                 >
                   {activeProject.name}
                 </a>
-                <button 
+                <button
                   className="project-modal-close-btn"
                   onClick={() => setActiveProject(null)}
                   aria-label="Close modal"
@@ -314,8 +314,8 @@ const Projects = () => {
 
               {/* Large Mockup Showcase */}
               <div className="project-modal-showcase">
-                <img 
-                  src={activeProject.hover || activeProject.image} 
+                <img
+                  src={activeProject.hover || activeProject.image}
                   alt={`${activeProject.name} detail mockup`}
                   className="project-modal-image"
                 />
