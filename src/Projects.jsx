@@ -234,7 +234,7 @@ const Projects = () => {
                           style={{ order: isEven ? 3 : 1 }}
                           initial={{ opacity: 0, x: isEven ? 30 : -30 }}
                           animate={{ opacity: 1, x: 0 }}
-                          exit={{ opacity: 0, x: isEven ? 30 : -30, transition: { duration: 0.2 } }}
+                          exit={{ opacity: 0, transition: { duration: 0.2, ease: "easeOut" } }}
                           transition={{ delay: 0.15, duration: 0.5, ease: "easeOut" }}
                         >
                           {/* Project Header */}
@@ -309,7 +309,7 @@ const Projects = () => {
                           aria-label="Collapse project details"
                           initial={{ opacity: 0, scale: 0.8 }}
                           animate={{ opacity: 1, scale: 1 }}
-                          exit={{ opacity: 0, scale: 0.8, transition: { duration: 0.2 } }}
+                          exit={{ opacity: 0, scale: 0.9, transition: { duration: 0.2, ease: "easeOut" } }}
                           transition={{ duration: 0.3 }}
                         >
                           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
@@ -328,8 +328,8 @@ const Projects = () => {
                         key="normal-info"
                         className="project-info-row"
                         initial={{ opacity: 0, y: 15 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: 15, transition: { duration: 0.2 } }}
+                        animate={{ opacity: 1, y: 0, transition: { delay: 0.2, duration: 0.5, ease: "easeOut" } }}
+                        exit={{ opacity: 0, y: 15, transition: { duration: 0.2, ease: "easeIn" } }}
                         transition={{ duration: 0.4, ease: "easeOut" }}
                       >
                         <div className="project-meta-left">

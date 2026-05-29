@@ -317,14 +317,15 @@ const AboutMe = () => {
                   I'm Carille Peran, nice to meet you!
                 </motion.h2>
 
-                <motion.p 
+                <motion.div 
                   className="modal-bio"
                   initial={{ y: 20, opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}
                   transition={{ delay: 0.4, duration: 0.6, ease: "easeOut" }}
                 >
-                  I'm a 22-year-old Front-End developer and Quality Assurance enthusiast who loves to create clean, responsive, intuitive web applications. I focuses on building modern, beautiful, and performant websites and web applications across different devices and platforms. I strive to balance form and function to build user interfaces that are fast, reliable, and easy to use.
-                </motion.p>
+                  <p>I am a 22-year-old Front-End Developer and QA enthusiast who loves building clean, responsive, and intuitive web applications. My passion for the IT field was ignited in my childhood by a love for technology and video games an interest that eventually inspired me to start developing my own software.</p>
+                  <p style={{ marginTop: '15px' }}>Since completing my first prototype in 2023, I have continuously honed my skills in modern web frameworks like React and Vite, as well as game development tools like Unity. In 2025, I successfully delivered my first large-scale client project, proving my ability to bridge the gap between rigorous testing and innovative design. Today, I focus on balancing form and function to build user interfaces that are fast, reliable, and easy to use across all platforms.</p>
+                </motion.div>
 
                 <motion.div 
                   className="modal-skills-section"
@@ -382,6 +383,20 @@ const AboutMe = () => {
                       transition={{ delay: 0.9 }}
                     >
                       manual/automated testing
+                    </motion.li>
+                    <motion.li 
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.95 }}
+                    >
+                      Unity
+                    </motion.li>
+                    <motion.li 
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 1.0 }}
+                    >
+                      Web design
                     </motion.li>
                   </ul>
                 </motion.div>
