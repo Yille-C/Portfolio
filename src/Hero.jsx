@@ -388,10 +388,10 @@ const Hero = () => {
 
                   <div className="menu-overlay-footer">
                     <div className="menu-socials">
-                      <a href="https://facebook.com" target="_blank" rel="noopener noreferrer">Facebook</a>
-                      <a href="https://instagram.com" target="_blank" rel="noopener noreferrer">Instagram</a>
-                      <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer">linkedin</a>
-                      <a href="https://github.com/carilleperan" target="_blank" rel="noopener noreferrer">Github</a>
+                      <a href="https://www.facebook.com/Yillllee/" target="_blank" rel="noopener noreferrer">Facebook</a>
+                      <a href="https://www.instagram.com/yillllee/" target="_blank" rel="noopener noreferrer">Instagram</a>
+                      <a href="https://www.linkedin.com/in/carille-peran-b41475412/" target="_blank" rel="noopener noreferrer">linkedin</a>
+                      <a href="https://github.com/Yille-C" target="_blank" rel="noopener noreferrer">Github</a>
                     </div>
                   </div>
                 </motion.div>
