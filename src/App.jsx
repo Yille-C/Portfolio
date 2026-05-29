@@ -31,6 +31,7 @@ function App() {
           backgroundColor,
           color: textColor,
           "--text-color": textColor,
+          "--bg-color": backgroundColor,
           "--text-muted": textMuted,
           "--border-color": borderColor
         }}

@@ -31,10 +31,10 @@
   display: inline-block;
   margin: 0;
   padding: 5px 0;
+  z-index: 1;
 }
 
-.about-section-title::after {
-  content: '';
+.strikeout-line {
   position: absolute;
   left: 0;
   right: 0;
@@ -42,6 +42,7 @@
   height: 2px;
   background-color: #FF0000;
   transform: translateY(-50%);
+  z-index: -1;
 }
 
 /* Grid Layout */
@@ -70,11 +71,9 @@
 
 /* Cyan divider line under greeting */
 .about-cyan-line {
-  width: 130px;
+  width: min(240px, 100%);
   height: 4px;
   background-color: #FF0000;
-  ;
-  /* Cyan/mint color from Image 3 */
   border-radius: 2px;
   margin: 24px 0 40px 0;
 }
@@ -142,7 +141,38 @@
   transform: translateX(4px);
 }
 
-/* Interactive Magnetic Button Styles */
+/* Buttons Flex Row & Download button */
+.about-buttons-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 32px;
+  margin-top: 10px;
+}
+
+.resume-btn {
+  padding: 16px 28px;
+  border-radius: 30px;
+  background-color: transparent;
+  color: var(--text-color, #000000);
+  border: 1.5px solid var(--text-color, #000000);
+  font-size: 1.05rem;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.resume-btn:hover {
+  background-color: var(--text-color, #000000);
+  color: var(--bg-color, #ffffff);
+  transform: translateY(-3px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
 .magnetic-btn-wrapper {
   position: relative;
   width: 160px;
@@ -151,7 +181,6 @@
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  margin-top: 10px;
 }
 
 .magnetic-btn-fill {

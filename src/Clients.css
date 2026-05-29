@@ -35,10 +35,10 @@
 
 /* Ribbon 1: Dark (Angled Downward) */
 .ribbon-dark {
-  background-color: #0c0c0c;
-  color: #fff;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  background-color: #fff;
+  color: #000;
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
   top: 80px;
   transform: translate(-50%, -50%) rotate(-4deg);
   z-index: 10;
@@ -46,8 +46,10 @@
 
 /* Ribbon 2: Light (Angled Upward) */
 .ribbon-light {
-  background-color: #fff;
-  color: #000;
+  background-color: #0c0c0c;
+  color: #fff;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   top: 130px;
   transform: translate(-50%, -50%) rotate(3.5deg);
   z-index: 20;

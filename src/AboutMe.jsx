@@ -2,6 +2,49 @@ import React, { useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import './AboutMe.css';
 
+const titleContainerVariants = {
+  hidden: {},
+  visible: {
+    transition: {
+      staggerChildren: 0.04,
+    }
+  }
+};
+
+const letterVariants = {
+  hidden: { opacity: 0, y: 8 },
+  visible: { 
+    opacity: 1, 
+    y: 0,
+    transition: { duration: 0.3, ease: "easeOut" }
+  }
+};
+
+const lineVariants = {
+  hidden: { scaleX: 0 },
+  visible: { 
+    scaleX: 1,
+    transition: { duration: 0.6, delay: 0.4, ease: "easeInOut" }
+  }
+};
+
+const typewriterContainer = {
+  hidden: {},
+  visible: {
+    transition: {
+      staggerChildren: 0.05,
+    }
+  }
+};
+
+const typewriterLetter = {
+  hidden: { opacity: 0 },
+  visible: { 
+    opacity: 1,
+    transition: { duration: 0.01 }
+  }
+};
+
 const AboutMe = () => {
   const buttonRef = useRef(null);
   const [coords, setCoords] = useState({ x: 0, y: 0 });
@@ -47,15 +90,30 @@ const AboutMe = () => {
     <section className="about-section" id="about">
       <div className="about-container">
         {/* Section Title with Red Strike-through */}
-        <motion.div
-          className="about-header"
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.3 }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
-        >
-          <h2 className="about-section-title">ABOUT ME</h2>
-        </motion.div>
+        <div className="about-header">
+          <motion.h2 
+            className="about-section-title"
+            variants={titleContainerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: false, amount: 0.3 }}
+          >
+            {"ABOUT ME".split("").map((char, index) => (
+              <motion.span 
+                key={index} 
+                variants={letterVariants} 
+                style={{ display: "inline-block", whiteSpace: "pre" }}
+              >
+                {char}
+              </motion.span>
+            ))}
+            <motion.span 
+              className="strikeout-line" 
+              variants={lineVariants} 
+              style={{ originX: 0 }} 
+            />
+          </motion.h2>
+        </div>
 
         {/* Content Grid */}
         <div className="about-grid">
@@ -63,65 +121,86 @@ const AboutMe = () => {
           <div className="about-col-left">
             <motion.h1
               className="about-greeting"
-              initial={{ opacity: 0, y: 35 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 0.8, ease: "easeOut" }}
+              variants={typewriterContainer}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: false, amount: 0.3 }}
             >
-              Hello, I'm Carille
+              {"Hello, I'm Carille".split("").map((char, index) => (
+                <motion.span key={index} variants={typewriterLetter}>
+                  {char}
+                </motion.span>
+              ))}
             </motion.h1>
 
-            {/* The custom cyan mint line under greeting */}
+            {/* The custom red line under greeting */}
             <motion.div
               className="about-cyan-line"
-              initial={{ width: 0 }}
-              whileInView={{ width: 130 }}
-              viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
+              initial={{ scaleX: 0 }}
+              whileInView={{ scaleX: 1 }}
+              viewport={{ once: false, amount: 0.3 }}
+              transition={{ duration: 0.8, delay: 1.1, ease: "easeOut" }}
+              style={{ originX: 0 }}
             />
 
-            {/* Interactive Magnetic Button Container */}
-            <motion.div
-              ref={buttonRef}
-              className="magnetic-btn-wrapper"
-              onMouseMove={handleMouseMove}
-              onMouseEnter={handleMouseEnter}
-              onMouseLeave={handleMouseLeave}
-              initial={{ opacity: 0, scale: 0.8 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 0.6, delay: 0.4, ease: "easeOut" }}
-            >
-              {/* Outer floating outline ring */}
-              <div
-                className={`magnetic-btn-outline ${isHovered ? 'active' : ''}`}
-                style={{
-                  transform: `translate(${coords.x * 1.4}px, ${coords.y * 1.4}px)`,
-                  transition: isHovered ? 'transform 0.08s ease-out' : 'transform 0.4s cubic-bezier(0.25, 1, 0.5, 1)'
-                }}
-              />
-
-              {/* Inner solid button fill */}
-              <button
-                className="magnetic-btn-fill"
-                onClick={handleReachOutClick}
-                style={{
-                  transform: `translate(${coords.x * 0.8}px, ${coords.y * 0.8}px)`,
-                  transition: isHovered ? 'transform 0.08s ease-out' : 'transform 0.4s cubic-bezier(0.25, 1, 0.5, 1)'
-                }}
+            {/* Buttons Flex Row */}
+            <div className="about-buttons-row">
+              {/* Interactive Magnetic Button Container */}
+              <motion.div
+                ref={buttonRef}
+                className="magnetic-btn-wrapper"
+                onMouseMove={handleMouseMove}
+                onMouseEnter={handleMouseEnter}
+                onMouseLeave={handleMouseLeave}
+                initial={{ opacity: 0, scale: 0.8 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: false, amount: 0.3 }}
+                transition={{ duration: 0.6, delay: 0.4, ease: "easeOut" }}
               >
-                <span
-                  className="magnetic-btn-text"
+                {/* Outer floating outline ring */}
+                <div
+                  className={`magnetic-btn-outline ${isHovered ? 'active' : ''}`}
                   style={{
-                    display: 'inline-block',
-                    transform: `translate(${coords.x * 0.3}px, ${coords.y * 0.3}px)`,
+                    transform: `translate(${coords.x * 1.4}px, ${coords.y * 1.4}px)`,
+                    transition: isHovered ? 'transform 0.08s ease-out' : 'transform 0.4s cubic-bezier(0.25, 1, 0.5, 1)'
+                  }}
+                />
+
+                {/* Inner solid button fill */}
+                <button
+                  className="magnetic-btn-fill"
+                  onClick={handleReachOutClick}
+                  style={{
+                    transform: `translate(${coords.x * 0.8}px, ${coords.y * 0.8}px)`,
                     transition: isHovered ? 'transform 0.08s ease-out' : 'transform 0.4s cubic-bezier(0.25, 1, 0.5, 1)'
                   }}
                 >
-                  Reach Out &rarr;
-                </span>
-              </button>
-            </motion.div>
+                  <span
+                    className="magnetic-btn-text"
+                    style={{
+                      display: 'inline-block',
+                      transform: `translate(${coords.x * 0.3}px, ${coords.y * 0.3}px)`,
+                      transition: isHovered ? 'transform 0.08s ease-out' : 'transform 0.4s cubic-bezier(0.25, 1, 0.5, 1)'
+                    }}
+                  >
+                    Reach Out &rarr;
+                  </span>
+                </button>
+              </motion.div>
+
+              {/* Download Resume Pill Button */}
+              <motion.a
+                href="/resume.pdf"
+                download
+                className="resume-btn"
+                initial={{ opacity: 0, y: 25 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: false, amount: 0.3 }}
+                transition={{ duration: 0.6, delay: 0.5, ease: "easeOut" }}
+              >
+                Download Resume <span className="arrow">&darr;</span>
+              </motion.a>
+            </div>
           </div>
 
           {/* Right Column: Biography details and links */}
@@ -131,7 +210,7 @@ const AboutMe = () => {
                 className="about-bio-text"
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.3 }}
+                viewport={{ once: false, amount: 0.3 }}
                 transition={{ duration: 0.8, delay: 0.1, ease: "easeOut" }}
               >
                 I’m a 22-year-old Front-end Developer and Quality Assurance. I focus on building clean, modern websites while ensuring smooth performance and great user experience.
@@ -140,7 +219,7 @@ const AboutMe = () => {
                 className="about-quote"
                 initial={{ opacity: 0, x: -20 }}
                 whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true, amount: 0.3 }}
+                viewport={{ once: false, amount: 0.3 }}
                 transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
               >
                 "Building seamless interfaces, ensuring flawless experiences.”
@@ -152,7 +231,7 @@ const AboutMe = () => {
               className="about-link-container"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.3 }}
+              viewport={{ once: false, amount: 0.3 }}
               transition={{ duration: 0.6, delay: 0.4, ease: "easeOut" }}
             >
               <a href="#more" className="about-more-link">

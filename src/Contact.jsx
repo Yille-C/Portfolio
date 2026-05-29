@@ -1,6 +1,50 @@
 import React, { forwardRef, useState } from 'react';
 import { motion } from 'framer-motion';
+import cpLogo from './assets/logo.png';
 import './Contact.css';
+
+const titleContainerVariants = {
+  hidden: {},
+  visible: {
+    transition: {
+      staggerChildren: 0.04,
+    }
+  }
+};
+
+const letterVariants = {
+  hidden: { opacity: 0, y: 8 },
+  visible: { 
+    opacity: 1, 
+    y: 0,
+    transition: { duration: 0.3, ease: "easeOut" }
+  }
+};
+
+const lineVariants = {
+  hidden: { scaleX: 0 },
+  visible: { 
+    scaleX: 1,
+    transition: { duration: 0.6, delay: 0.4, ease: "easeInOut" }
+  }
+};
+
+const typewriterContainer = {
+  hidden: {},
+  visible: {
+    transition: {
+      staggerChildren: 0.05,
+    }
+  }
+};
+
+const typewriterLetter = {
+  hidden: { opacity: 0 },
+  visible: { 
+    opacity: 1,
+    transition: { duration: 0.01 }
+  }
+};
 
 const Contact = forwardRef((props, ref) => {
   const [isHovered, setIsHovered] = useState(false);
@@ -40,32 +84,51 @@ const Contact = forwardRef((props, ref) => {
 
           {/* Left Column: Heading and Title */}
           <div className="contact-col-left">
-            <motion.div
-              className="contact-header"
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 0.8, ease: "easeOut" }}
-            >
-              <h2 className="contact-section-title">CONTACT</h2>
-            </motion.div>
+            <div className="contact-header">
+              <motion.h2 
+                className="contact-section-title"
+                variants={titleContainerVariants}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: false, amount: 0.3 }}
+              >
+                {"CONTACT".split("").map((char, index) => (
+                  <motion.span 
+                    key={index} 
+                    variants={letterVariants} 
+                    style={{ display: "inline-block", whiteSpace: "pre" }}
+                  >
+                    {char}
+                  </motion.span>
+                ))}
+                <motion.span 
+                  className="strikeout-line" 
+                  variants={lineVariants} 
+                  style={{ originX: 0 }} 
+                />
+              </motion.h2>
+            </div>
 
             <motion.h1
               className="contact-greeting"
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 0.8, delay: 0.1, ease: "easeOut" }}
+              variants={typewriterContainer}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: false, amount: 0.3 }}
             >
-              Lets have a chat
+              {"Lets have a chat".split("").map((char, index) => (
+                <motion.span key={index} variants={typewriterLetter}>
+                  {char}
+                </motion.span>
+              ))}
             </motion.h1>
 
             <motion.p
               className="contact-description"
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
+              viewport={{ once: false, amount: 0.3 }}
+              transition={{ duration: 0.8, delay: 0.8, ease: "easeOut" }}
             >
               Whether you need a developer or a QA, I'm here to help. Reach out and let's discuss how we can work together.
             </motion.p>
@@ -141,10 +204,20 @@ const Contact = forwardRef((props, ref) => {
 
         </div>
 
+        {/* Divider line that animates from the center to left/right */}
+        <motion.div
+          className="footer-divider-line"
+          initial={{ scaleX: 0 }}
+          whileInView={{ scaleX: 1 }}
+          viewport={{ once: false, amount: 0.3 }}
+          transition={{ duration: 1.2, ease: "easeInOut" }}
+          style={{ originX: 0.5 }}
+        />
+
         {/* Footer Section matching the 3rd Image design */}
         <footer className="contact-footer">
           <div className="footer-brand-section">
-            <h3 className="footer-brand-nickname">Yille</h3>
+            <img src={cpLogo} alt="CP Logo" className="footer-logo-img" />
             <h4 className="footer-brand-fullname">Carille Peran</h4>
           </div>
 

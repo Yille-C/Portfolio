@@ -28,6 +28,29 @@ const itemVariants = {
   }
 };
 
+const introContainerVariants = {
+  hidden: { opacity: 1 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.12,
+      delayChildren: 0.2
+    }
+  }
+};
+
+const introWordVariants = {
+  hidden: { opacity: 0, y: 15 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.6,
+      ease: "easeOut"
+    }
+  }
+};
+
 const Hero = () => {
   const [showIntro, setShowIntro] = useState(true);
   const [isLightBg, setIsLightBg] = useState(false);
@@ -171,6 +194,9 @@ const Hero = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, [showIntro]);
 
+  const introText = "Creating Systems for the Future World.";
+  const introWords = introText.split(" ");
+
   return (
     <div className="hero-container" id="index">
       <AnimatePresence>
@@ -181,14 +207,26 @@ const Hero = () => {
             className="intro-screen"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            exit={{ opacity: 0, transition: { duration: 1 } }}
+            exit={{ 
+              opacity: 0, 
+              filter: "blur(16px)",
+              transition: { duration: 0.8, ease: "easeInOut" } 
+            }}
           >
             <motion.h1 
-              initial={{ y: 20, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ delay: 0.5, duration: 0.8 }}
+              variants={introContainerVariants}
+              initial="hidden"
+              animate="visible"
             >
-              Creating Systems for the Future World.
+              {introWords.map((word, idx) => (
+                <motion.span
+                  key={idx}
+                  variants={introWordVariants}
+                  style={{ display: "inline-block", marginRight: "0.25em" }}
+                >
+                  {word}
+                </motion.span>
+              ))}
             </motion.h1>
           </motion.div>
         ) : (
