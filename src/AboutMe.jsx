@@ -2,6 +2,7 @@ import { useRef, useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import './AboutMe.css';
 import formalImg from './assets/formal.jpg';
+import resumePdf from './assets/CarillePeran_Resume.pdf';
 
 const titleContainerVariants = {
   hidden: {},
@@ -179,8 +180,8 @@ const AboutMe = () => {
 
               {/* Download Resume Pill Button */}
               <motion.a
-                href="/resume.pdf"
-                download
+                href={resumePdf}
+                download="CarillePeran_Resume.pdf"
                 className="resume-btn"
                 initial={{ opacity: 0, y: 25 }}
                 whileInView={{ opacity: 1, y: 0 }}

@@ -9,6 +9,8 @@ import ReClaimImage from './assets/ReClaimImage.png';
 import ReClaimHover from './assets/ReClaimHover.gif';
 import BakunwaProject from './assets/BakunwaProject.gif';
 import ARTAPreview from './assets/ARTAPreview.gif';
+import EduManagePreview from './assets/EduManagePreview.gif';
+import Saferoot from './assets/Saferoot.gif';
 
 const projectsData = [
   {
@@ -66,6 +68,34 @@ const projectsData = [
       backend: 'Node.js, Express, MongoDB'
     },
     url: 'https://github.com/Yille-C/ARTA-Feedback-Platform'
+  },
+  {
+    id: 'edumanage',
+    name: 'EduManage',
+    intro: 'Streamline student management, track grades and attendance, generate insights with advanced analytics and predictions',
+    role: 'UI/UX Designer/Quality Assurance',
+    image: EduManagePreview,
+    hover: EduManagePreview,
+    description: 'EduManage is a comprehensive platform designed to streamline student management, track academic grades and attendance, and generate actionable insights with advanced analytics and predictions. As a UI/UX Designer and Quality Assurance specialist, I focused on crafting an intuitive, seamless user interface while ensuring the system\'s robustness, reliability, and ease of use through rigorous testing and quality assurance.',
+    techStack: {
+      frontend: 'HTML, TailwindCSS, TypeScript',
+      backend: 'MySQL, Python'
+    },
+    url: 'https://github.com/Yille-C/EduManage'
+  },
+  {
+    id: 'saferoot',
+    name: 'Saferoot',
+    intro: 'A client-based apparel platform themed around cultural beach and surfing lifestyle.',
+    role: 'Lead Developer',
+    image: Saferoot,
+    hover: Saferoot,
+    description: 'Saferoot is a client-based e-commerce and brand platform developed for a couple who launched their own apparel business. The project features a cultural beach and surfing theme, showcasing coastal heritage and surf culture. As the Lead Developer, I designed and built the custom web solution from the ground up, implementing a responsive user interface, smooth product discovery, and an optimized backend architecture to support their business growth.',
+    techStack: {
+      frontend: 'HTML, CSS, JavaScript',
+      backend: 'PHP'
+    },
+    url: 'https://github.com/Yille-C/Saferoot'
   }
 ];
 
@@ -266,39 +296,55 @@ const Projects = () => {
             >
               {/* Modal Header */}
               <div className="project-modal-header">
-                <a
+                <motion.a
                   href={activeProject.url}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="project-modal-title"
+                  initial={{ y: 20, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  transition={{ delay: 0.1, duration: 0.5, ease: "easeOut" }}
                 >
                   {activeProject.name}
-                </a>
-                <button
+                </motion.a>
+                <motion.button
                   className="project-modal-close-btn"
                   onClick={() => setActiveProject(null)}
                   aria-label="Close modal"
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ delay: 0.15, duration: 0.4, ease: "easeOut" }}
                 >
                   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
                     <line x1="18" y1="6" x2="6" y2="18"></line>
                     <line x1="6" y1="6" x2="18" y2="18"></line>
                   </svg>
-                </button>
+                </motion.button>
               </div>
 
               {/* Modal Details Grid */}
               <div className="project-modal-grid">
                 {/* Left Column: Description */}
-                <div className="project-modal-col-left">
+                <motion.div
+                  className="project-modal-col-left"
+                  initial={{ y: 30, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  transition={{ delay: 0.25, duration: 0.6, ease: "easeOut" }}
+                >
                   <h3 className="project-modal-section-title">DESCRIPTION</h3>
                   <div className="title-divider"></div>
                   <p className="project-modal-description-text">
                     {activeProject.description}
                   </p>
-                </div>
+                </motion.div>
 
                 {/* Right Column: Tech Stack */}
-                <div className="project-modal-col-right">
+                <motion.div
+                  className="project-modal-col-right"
+                  initial={{ y: 30, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  transition={{ delay: 0.35, duration: 0.6, ease: "easeOut" }}
+                >
                   <h3 className="project-modal-section-title">TECH STACK</h3>
                   <div className="title-divider"></div>
                   <div className="project-modal-tech-list">
@@ -309,17 +355,22 @@ const Projects = () => {
                       </div>
                     ))}
                   </div>
-                </div>
+                </motion.div>
               </div>
 
               {/* Large Mockup Showcase */}
-              <div className="project-modal-showcase">
+              <motion.div
+                className="project-modal-showcase"
+                initial={{ y: 40, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ delay: 0.45, duration: 0.7, ease: "easeOut" }}
+              >
                 <img
                   src={activeProject.hover || activeProject.image}
                   alt={`${activeProject.name} detail mockup`}
                   className="project-modal-image"
                 />
-              </div>
+              </motion.div>
             </motion.div>
           </motion.div>
         )}

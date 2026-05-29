@@ -257,14 +257,15 @@
 .project-modal-backdrop {
   position: fixed;
   inset: 0;
-  background-color: rgba(0, 0, 0, 0.25);
+  background-color: rgba(0, 0, 0, 0.7);
   z-index: 1000; /* overlay above everything, header is 100 */
   display: flex;
   justify-content: center;
   align-items: flex-start;
   padding: 60px 40px;
   overflow-y: auto; /* allows scrolling the backdrop if modal is tall */
-  backdrop-filter: blur(16px);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
 }
 
 .project-modal-window {
