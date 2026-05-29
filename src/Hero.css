@@ -51,7 +51,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 20px 60px;
+  padding: 20px 40px;
   z-index: 100;
   box-sizing: border-box;
 }
@@ -70,7 +70,6 @@
   align-items: center;
   justify-content: center;
   transition: opacity 0.3s ease;
-  mix-blend-mode: difference; /* Inverts color over light backgrounds so it is always visible! */
 }
 
 .logo:hover,
@@ -79,7 +78,7 @@
 }
 
 .logo-img {
-  height: 64px;
+  height: 84px;
   width: auto;
   object-fit: contain;
 }
@@ -207,5 +206,140 @@
 
   .scroll-line {
     height: 40px;
+  }
+}
+
+/* ==========================================================================
+   Navigation Menu Overlay Styles
+   ========================================================================== */
+
+.menu-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: #000000;
+  z-index: 99; /* sits right below fixed header (z-index: 100) */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 140px 60px 60px 60px;
+  box-sizing: border-box;
+}
+
+.menu-overlay-content {
+  display: flex;
+  align-items: center;
+  flex-grow: 1;
+}
+
+.menu-nav ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.menu-link-btn {
+  background: none;
+  border: none;
+  color: #ffffff;
+  font-family: 'Inter', sans-serif;
+  font-size: clamp(3rem, 7vw, 6.5rem);
+  font-weight: 700;
+  text-transform: uppercase;
+  cursor: pointer;
+  padding: 0;
+  text-align: left;
+  position: relative;
+  line-height: 1.1;
+  transition: opacity 0.3s ease;
+  letter-spacing: -0.02em;
+}
+
+/* Red strike-through line effect */
+.menu-link-btn::after {
+  content: '';
+  position: absolute;
+  left: -2%;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 0;
+  height: 8px;
+  background-color: #FF0000;
+  transition: width 0.35s cubic-bezier(0.25, 1, 0.5, 1);
+  pointer-events: none;
+}
+
+.menu-link-btn.active::after,
+.menu-link-btn:hover::after {
+  width: 104%;
+}
+
+.menu-link-btn:hover {
+  opacity: 1;
+}
+
+.menu-link-btn:not(:hover):not(.active) {
+  opacity: 0.85;
+}
+
+.menu-overlay-footer {
+  display: flex;
+  justify-content: flex-end; /* Align socials to bottom right */
+  align-items: center;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding-top: 40px;
+}
+
+.menu-socials {
+  display: flex;
+  gap: 30px;
+}
+
+.menu-socials a {
+  color: #ffffff;
+  text-decoration: none;
+  font-size: clamp(0.9rem, 1.5vw, 1.1rem);
+  font-weight: 400;
+  opacity: 0.6;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.menu-socials a:hover {
+  opacity: 1;
+  transform: translateY(-2px);
+}
+
+/* ==========================================================================
+   Responsive Styles for Menu Overlay
+   ========================================================================== */
+
+@media (max-width: 1024px) {
+  .menu-overlay {
+    padding: 120px 60px 40px 60px;
+  }
+  
+  .menu-link-btn::after {
+    height: 6px;
+  }
+}
+
+@media (max-width: 768px) {
+  .menu-overlay {
+    padding: 100px 30px 30px 30px;
+  }
+  
+  .menu-overlay-content {
+    gap: 40px;
+  }
+  
+  .menu-link-btn::after {
+    height: 4px;
+  }
+
+  .menu-socials {
+    gap: 20px;
+    flex-wrap: wrap;
   }
 }

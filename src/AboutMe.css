@@ -1,7 +1,7 @@
 /* About Me Section Layout */
 .about-section {
-  background-color: #ffffff;
-  color: #000000;
+  background-color: transparent;
+  color: var(--text-color, #000000);
   padding: 100px 0 140px 0;
   width: 100%;
   font-family: 'Inter', sans-serif;
@@ -26,7 +26,7 @@
   font-size: 1.1rem;
   font-weight: 700;
   letter-spacing: 0.15em;
-  color: #000000;
+  color: var(--text-color, #000000);
   position: relative;
   display: inline-block;
   margin: 0;
@@ -63,7 +63,7 @@
   font-size: clamp(2.5rem, 5.5vw, 4.8rem);
   font-weight: 800;
   line-height: 1.1;
-  color: #000000;
+  color: var(--text-color, #000000);
   margin: 0;
   letter-spacing: -0.03em;
 }
@@ -96,7 +96,7 @@
 .about-bio-text {
   font-size: 1.3rem;
   line-height: 1.6;
-  color: #2b2b2b;
+  color: var(--text-muted, #2b2b2b);
   margin: 0;
   font-weight: 400;
 }
@@ -104,10 +104,10 @@
 .about-quote {
   font-size: 1.25rem;
   line-height: 1.6;
-  color: #666666;
+  color: var(--text-muted, #666666);
   font-style: italic;
   margin: 0;
-  border-left: 3px solid rgba(0, 0, 0, 0.1);
+  border-left: 3px solid var(--border-color, rgba(0, 0, 0, 0.1));
   padding-left: 16px;
   font-weight: 400;
 }
@@ -121,7 +121,7 @@
 
 .about-more-link {
   font-size: 1.05rem;
-  color: #1a1a1a;
+  color: var(--text-color, #1a1a1a);
   text-decoration: none;
   font-weight: 600;
   display: flex;
@@ -135,7 +135,7 @@
 }
 
 .about-more-link:hover {
-  color: #000000;
+  color: var(--text-color, #000000);
 }
 
 .about-more-link:hover .arrow {
@@ -181,7 +181,7 @@
   width: 146px;
   height: 146px;
   border-radius: 50%;
-  border: 1px solid rgba(0, 0, 0, 0.15);
+  border: 1px solid var(--border-color, rgba(0, 0, 0, 0.15));
   position: absolute;
   z-index: 1;
   pointer-events: none;
@@ -189,7 +189,7 @@
 }
 
 .magnetic-btn-outline.active {
-  border-color: rgba(0, 0, 0, 0.6);
+  border-color: var(--text-color, rgba(0, 0, 0, 0.6));
 }
 
 /* Mobile & Tablet Adjustments */

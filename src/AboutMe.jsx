@@ -1,4 +1,5 @@
 import React, { useRef, useState } from 'react';
+import { motion } from 'framer-motion';
 import './AboutMe.css';
 
 const AboutMe = () => {
@@ -35,30 +36,61 @@ const AboutMe = () => {
     setCoords({ x: 0, y: 0 });
   };
 
+  const handleReachOutClick = () => {
+    const contactSection = document.querySelector('.contact-section');
+    if (contactSection) {
+      contactSection.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
-    <section className="about-section">
+    <section className="about-section" id="about">
       <div className="about-container">
         {/* Section Title with Red Strike-through */}
-        <div className="about-header">
+        <motion.div
+          className="about-header"
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
+        >
           <h2 className="about-section-title">ABOUT ME</h2>
-        </div>
+        </motion.div>
 
         {/* Content Grid */}
         <div className="about-grid">
           {/* Left Column: Greeting and Call to Action */}
           <div className="about-col-left">
-            <h1 className="about-greeting">Hello, I'm Carille</h1>
+            <motion.h1
+              className="about-greeting"
+              initial={{ opacity: 0, y: 35 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.3 }}
+              transition={{ duration: 0.8, ease: "easeOut" }}
+            >
+              Hello, I'm Carille
+            </motion.h1>
 
             {/* The custom cyan mint line under greeting */}
-            <div className="about-cyan-line"></div>
+            <motion.div
+              className="about-cyan-line"
+              initial={{ width: 0 }}
+              whileInView={{ width: 130 }}
+              viewport={{ once: true, amount: 0.3 }}
+              transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
+            />
 
             {/* Interactive Magnetic Button Container */}
-            <div
+            <motion.div
               ref={buttonRef}
               className="magnetic-btn-wrapper"
               onMouseMove={handleMouseMove}
               onMouseEnter={handleMouseEnter}
               onMouseLeave={handleMouseLeave}
+              initial={{ opacity: 0, scale: 0.8 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true, amount: 0.3 }}
+              transition={{ duration: 0.6, delay: 0.4, ease: "easeOut" }}
             >
               {/* Outer floating outline ring */}
               <div
@@ -72,6 +104,7 @@ const AboutMe = () => {
               {/* Inner solid button fill */}
               <button
                 className="magnetic-btn-fill"
+                onClick={handleReachOutClick}
                 style={{
                   transform: `translate(${coords.x * 0.8}px, ${coords.y * 0.8}px)`,
                   transition: isHovered ? 'transform 0.08s ease-out' : 'transform 0.4s cubic-bezier(0.25, 1, 0.5, 1)'
@@ -88,26 +121,44 @@ const AboutMe = () => {
                   Reach Out &rarr;
                 </span>
               </button>
-            </div>
+            </motion.div>
           </div>
 
           {/* Right Column: Biography details and links */}
           <div className="about-col-right">
             <div className="about-bio-content">
-              <p className="about-bio-text">
+              <motion.p
+                className="about-bio-text"
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.3 }}
+                transition={{ duration: 0.8, delay: 0.1, ease: "easeOut" }}
+              >
                 I’m a 22-year-old Front-end Developer and Quality Assurance. I focus on building clean, modern websites while ensuring smooth performance and great user experience.
-              </p>
-              <blockquote className="about-quote">
+              </motion.p>
+              <motion.blockquote
+                className="about-quote"
+                initial={{ opacity: 0, x: -20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true, amount: 0.3 }}
+                transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
+              >
                 "Building seamless interfaces, ensuring flawless experiences.”
-              </blockquote>
+              </motion.blockquote>
             </div>
 
             {/* Know More link at the bottom right */}
-            <div className="about-link-container">
+            <motion.div
+              className="about-link-container"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.3 }}
+              transition={{ duration: 0.6, delay: 0.4, ease: "easeOut" }}
+            >
               <a href="#more" className="about-more-link">
                 Know more about me <span className="arrow">&rarr;</span>
               </a>
-            </div>
+            </motion.div>
           </div>
         </div>
       </div>

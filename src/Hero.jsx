@@ -3,8 +3,36 @@ import { motion, AnimatePresence } from 'framer-motion';
 import cpLogo from './assets/logo.png';
 import './Hero.css';
 
+const listVariants = {
+  visible: {
+    transition: {
+      staggerChildren: 0.08,
+      delayChildren: 0.1
+    }
+  },
+  hidden: {}
+};
+
+const itemVariants = {
+  visible: {
+    y: 0,
+    opacity: 1,
+    transition: {
+      duration: 0.5,
+      ease: [0.215, 0.61, 0.355, 1]
+    }
+  },
+  hidden: {
+    y: 30,
+    opacity: 0
+  }
+};
+
 const Hero = () => {
   const [showIntro, setShowIntro] = useState(true);
+  const [isLightBg, setIsLightBg] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState('index');
 
   // Removes the intro text after 3 seconds
   useEffect(() => {
@@ -14,8 +42,137 @@ const Hero = () => {
     return () => clearTimeout(timer);
   }, []);
 
+  // Prevent scrolling when menu is open
+  useEffect(() => {
+    if (isMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [isMenuOpen]);
+
+  // ScrollSpy to track active section
+  useEffect(() => {
+    if (showIntro) return;
+
+    const handleActiveSectionScroll = () => {
+      const indexEl = document.querySelector('.hero-container');
+      const aboutEl = document.querySelector('.about-section');
+      const projectsEl = document.querySelector('.projects-section');
+      const contactEl = document.querySelector('.contact-section');
+
+      const scrollY = window.scrollY;
+      const viewportHeight = window.innerHeight;
+
+      // Bottom of page check
+      if ((window.innerHeight + scrollY) >= document.documentElement.scrollHeight - 100) {
+        setActiveSection('contact');
+        return;
+      }
+
+      const sections = [
+        { id: 'index', el: indexEl },
+        { id: 'about', el: aboutEl },
+        { id: 'projects', el: projectsEl },
+        { id: 'contact', el: contactEl }
+      ];
+
+      let currentSection = 'index';
+      // Find which section is currently active
+      for (const section of sections) {
+        if (section.el) {
+          const rect = section.el.getBoundingClientRect();
+          if (rect.top <= viewportHeight * 0.4 && rect.bottom >= viewportHeight * 0.3) {
+            currentSection = section.id;
+            break;
+          }
+        }
+      }
+      setActiveSection(currentSection);
+    };
+
+    window.addEventListener('scroll', handleActiveSectionScroll, { passive: true });
+    handleActiveSectionScroll();
+
+    return () => window.removeEventListener('scroll', handleActiveSectionScroll);
+  }, [showIntro]);
+
+  // Logo click refresh handler
+  const handleLogoClick = () => {
+    if (isMenuOpen) {
+      setIsMenuOpen(false);
+    }
+    if ('scrollRestoration' in window.history) {
+      window.history.scrollRestoration = 'manual';
+    }
+    window.scrollTo(0, 0);
+    window.location.reload();
+  };
+
+  const scrollToSection = (id) => {
+    const el = document.getElementById(id);
+    if (el) {
+      setIsMenuOpen(false);
+      el.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
+  // Scroll listener to detect when viewport is over light background sections
+  useEffect(() => {
+    if (showIntro) return;
+
+    const handleScroll = () => {
+      const scrollY = window.scrollY;
+      const hero = document.querySelector('.hero-container');
+      const clients = document.querySelector('.clients-section');
+
+      // 1. If we are in the Hero section, background is always dark
+      if (hero && scrollY < hero.offsetHeight) {
+        setIsLightBg(false);
+        return;
+      }
+
+      // 2. If we are in the Clients section, check the top/bottom split
+      if (clients) {
+        const clientsRect = clients.getBoundingClientRect();
+        if (clientsRect.top <= 50 && clientsRect.bottom >= 50) {
+          const relativeY = 50 - clientsRect.top;
+          const isOverDarkHalf = relativeY < clientsRect.height / 2;
+          setIsLightBg(!isOverDarkHalf);
+          return;
+        }
+      }
+
+      // 3. Otherwise, check the actual computed background color of the transitioning wrapper
+      const wrapper = document.querySelector('.scroll-bg-wrapper');
+      if (wrapper) {
+        const computedBg = window.getComputedStyle(wrapper).backgroundColor;
+        const match = computedBg.match(/\d+/g);
+        if (match && match.length >= 3) {
+          const r = parseInt(match[0]);
+          const g = parseInt(match[1]);
+          const b = parseInt(match[2]);
+          // Compute perceived luminance/brightness
+          const brightness = (r * 299 + g * 587 + b * 114) / 1000;
+          setIsLightBg(brightness >= 128); // Light theme if brightness >= 50%
+          return;
+        }
+      }
+
+      setIsLightBg(false);
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll();
+
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [showIntro]);
+
   return (
-    <div className="hero-container">
+    <div className="hero-container" id="index">
       <AnimatePresence>
         {showIntro ? (
           /* Intro Animation Screen */
@@ -44,14 +201,43 @@ const Hero = () => {
           >
             {/* Header Navigation */}
             <header className="hero-header">
-              <div className="logo">
+              <div 
+                className="logo" 
+                onClick={handleLogoClick} 
+                style={{ 
+                  filter: isMenuOpen ? 'none' : (isLightBg ? 'invert(1)' : 'none'), 
+                  transition: 'filter 0.3s ease' 
+                }}
+              >
                 <img src={cpLogo} alt="CP Logo" className="logo-img" />
               </div>
-              <div className="menu-btn">
+              <div className="menu-btn" onClick={() => setIsMenuOpen(!isMenuOpen)}>
                 <svg width="32" height="20" viewBox="0 0 32 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M16 4H30" stroke="white" strokeWidth="2.5" strokeLinecap="round"/>
-                  <path d="M8 10H30" stroke="white" strokeWidth="2.5" strokeLinecap="round"/>
-                  <path d="M2 16H30" stroke="white" strokeWidth="2.5" strokeLinecap="round"/>
+                  {/* Top Line */}
+                  <motion.path
+                    stroke={isMenuOpen ? "white" : (isLightBg ? "black" : "white")}
+                    strokeWidth="2.5"
+                    strokeLinecap="round"
+                    animate={isMenuOpen ? { d: "M6 2 L 26 18" } : { d: "M16 4 L 30 4" }}
+                    transition={{ duration: 0.3, ease: "easeInOut" }}
+                  />
+                  {/* Middle Line */}
+                  <motion.path
+                    stroke={isMenuOpen ? "white" : (isLightBg ? "black" : "white")}
+                    strokeWidth="2.5"
+                    strokeLinecap="round"
+                    animate={isMenuOpen ? { opacity: 0 } : { opacity: 1 }}
+                    transition={{ duration: 0.2 }}
+                    d="M8 10 L 30 10"
+                  />
+                  {/* Bottom Line */}
+                  <motion.path
+                    stroke={isMenuOpen ? "white" : (isLightBg ? "black" : "white")}
+                    strokeWidth="2.5"
+                    strokeLinecap="round"
+                    animate={isMenuOpen ? { d: "M26 2 L 6 18" } : { d: "M2 16 L 30 16" }}
+                    transition={{ duration: 0.3, ease: "easeInOut" }}
+                  />
                 </svg>
               </div>
             </header>
@@ -146,6 +332,71 @@ const Hero = () => {
               <span>SCROLL DOWN</span>
               <div className="scroll-line"></div>
             </motion.div>
+
+            {/* Menu Overlay */}
+            <AnimatePresence>
+              {isMenuOpen && (
+                <motion.div
+                  className="menu-overlay"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.3, ease: "easeInOut" }}
+                >
+                  <div className="menu-overlay-content">
+                    <nav className="menu-nav">
+                      <motion.ul
+                        variants={listVariants}
+                        initial="hidden"
+                        animate="visible"
+                      >
+                        <motion.li variants={itemVariants}>
+                          <button 
+                            className={`menu-link-btn ${activeSection === 'index' ? 'active' : ''}`}
+                            onClick={() => scrollToSection('index')}
+                          >
+                            INDEX
+                          </button>
+                        </motion.li>
+                        <motion.li variants={itemVariants}>
+                          <button 
+                            className={`menu-link-btn ${activeSection === 'about' ? 'active' : ''}`}
+                            onClick={() => scrollToSection('about')}
+                          >
+                            ABOUT
+                          </button>
+                        </motion.li>
+                        <motion.li variants={itemVariants}>
+                          <button 
+                            className={`menu-link-btn ${activeSection === 'projects' ? 'active' : ''}`}
+                            onClick={() => scrollToSection('projects')}
+                          >
+                            PROJECT
+                          </button>
+                        </motion.li>
+                        <motion.li variants={itemVariants}>
+                          <button 
+                            className={`menu-link-btn ${activeSection === 'contact' ? 'active' : ''}`}
+                            onClick={() => scrollToSection('contact')}
+                          >
+                            CONTACT
+                          </button>
+                        </motion.li>
+                      </motion.ul>
+                    </nav>
+                  </div>
+
+                  <div className="menu-overlay-footer">
+                    <div className="menu-socials">
+                      <a href="https://facebook.com" target="_blank" rel="noopener noreferrer">Facebook</a>
+                      <a href="https://instagram.com" target="_blank" rel="noopener noreferrer">Instagram</a>
+                      <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer">linkedin</a>
+                      <a href="https://github.com/carilleperan" target="_blank" rel="noopener noreferrer">Github</a>
+                    </div>
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
           </motion.div>
         )}
       </AnimatePresence>
